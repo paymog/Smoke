@@ -5,6 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 
 public class LoginActivity extends Activity {
@@ -13,8 +19,22 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+
+        addSignInListener();
+    }
+
+    private void addSignInListener() {
+        final Button button = (Button) findViewById(R.id.signInButton);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText passwordField =  (EditText) findViewById(R.id.passwordText);
+                EditText emailField = (EditText) findViewById(R.id.emailText);
+
+                ((TextView)findViewById(R.id.mainText)).setText(emailField.getText().toString() + passwordField.getText().toString());
+            }
+        });
     }
 
 
@@ -36,4 +56,5 @@ public class LoginActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
