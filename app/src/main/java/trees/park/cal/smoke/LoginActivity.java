@@ -10,10 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.w3c.dom.Text;
 
+import trees.park.cal.smoke.models.User;
 
-public class LoginActivity extends Activity {
+
+public class LoginActivity extends BaseSpiceActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,7 @@ public class LoginActivity extends Activity {
 
     private void addSignInListener() {
         final Button button = (Button) findViewById(R.id.signInButton);
+        final Gson gson = new Gson();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,7 +37,16 @@ public class LoginActivity extends Activity {
                 EditText passwordField =  (EditText) findViewById(R.id.passwordText);
                 EditText emailField = (EditText) findViewById(R.id.emailText);
 
-                ((TextView)findViewById(R.id.mainText)).setText(emailField.getText().toString() + passwordField.getText().toString());
+                //build user object
+                User user = new User(emailField.getText().toString(), passwordField.getText().toString());
+
+
+                //get json for user object
+                String userJson = gson.toJson(user, User.class);
+                getSpiceManager().exe
+                //post request to server
+                boolean test = true;
+                //wait for response
             }
         });
     }
