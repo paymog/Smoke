@@ -1,23 +1,33 @@
 package trees.park.cal.smoke;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.octo.android.robospice.JacksonGoogleHttpClientSpiceService;
+import com.octo.android.robospice.SpiceManager;
+import com.octo.android.robospice.persistence.DurationInMillis;
+import com.octo.android.robospice.persistence.exception.SpiceException;
+import com.octo.android.robospice.request.listener.RequestListener;
 
-import org.w3c.dom.Text;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.IOException;
+
+import trees.park.cal.smoke.server.SignInRequest;
 import trees.park.cal.smoke.models.User;
+import trees.park.cal.smoke.models.UserList;
 
 
-public class LoginActivity extends BaseSpiceActivity {
+public class LoginActivity extends Activity{
+
+    private SpiceManager spiceManager = new SpiceManager(JacksonGoogleHttpClientSpiceService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,28 +37,46 @@ public class LoginActivity extends BaseSpiceActivity {
         addSignInListener();
     }
 
+    @Override
+    protected void onStart() {
+        spiceManager.start(this);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        spiceManager.shouldStop();
+        super.onStop();
+    }
+
     private void addSignInListener() {
         final Button button = (Button) findViewById(R.id.signInButton);
-        final Gson gson = new Gson();
+        final EditText passwordField = (EditText) findViewById(R.id.passwordText);
+        final EditText emailText = (EditText) findViewById(R.id.emailText);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText passwordField =  (EditText) findViewById(R.id.passwordText);
-                EditText emailField = (EditText) findViewById(R.id.emailText);
+                final String password = passwordField.getText().toString();
+                final String email = emailText.getText().toString();
 
-                //build user object
-                User user = new User(emailField.getText().toString(), passwordField.getText().toString());
-
-
-                //get json for user object
-                String userJson = gson.toJson(user, User.class);
-                getSpiceManager().exe
-                //post request to server
-                boolean test = true;
-                //wait for response
+                spiceManager.execute(new SignInRequest(email, password), "json", DurationInMillis.ONE_MINUTE, new SignInRequestListener());
             }
         });
+    }
+
+    public final class SignInRequestListener implements RequestListener<User> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            Toast.makeText(LoginActivity.this, "failure", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onRequestSuccess(User userList) {
+            System.out.println(ToStringBuilder.reflectionToString(userList));
+            System.out.println("test");
+        }
     }
 
 
@@ -70,5 +98,7 @@ public class LoginActivity extends BaseSpiceActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

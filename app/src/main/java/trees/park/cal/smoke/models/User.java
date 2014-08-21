@@ -1,22 +1,23 @@
 package trees.park.cal.smoke.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Collections;
 import java.util.List;
 
-import lombok.experimental.Wither;
 
 public class User {
-    private static long NEXT_ID = 1;
 
     private long id;
     private String email;
-    private String password;
-    private List<Long> friends;
+    private String friends;
 
-    public User(String email, String password) {
-        this.id = NEXT_ID++;
+    @JsonCreator
+    public User(@JsonProperty("id") long id, @JsonProperty("email") String email, @JsonProperty("friends_list")String friends) {
+        this.id = id;
         this.email = email;
-        this.password = password;
-        this.friends = Collections.EMPTY_LIST;
+        this.friends = friends;
     }
+
 }
