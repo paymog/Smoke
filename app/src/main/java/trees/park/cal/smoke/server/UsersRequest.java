@@ -15,7 +15,7 @@ import trees.park.cal.smoke.models.UserList;
 
 public class UsersRequest extends GoogleHttpClientSpiceRequest<UserList>{
 
-    private static final String BASE_URL = "http://10.0.0.3:8181/users/";
+    private static final String BASE_URL = "http://192.168.2.66:8181/users/";
 
     public UsersRequest() {
         super(UserList.class);

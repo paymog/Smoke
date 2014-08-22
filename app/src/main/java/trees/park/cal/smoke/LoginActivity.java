@@ -1,40 +1,46 @@
 package trees.park.cal.smoke;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Scene;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.octo.android.robospice.JacksonGoogleHttpClientSpiceService;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import java.io.IOException;
-
-import trees.park.cal.smoke.server.SignInRequest;
+import trees.park.cal.smoke.models.SignedInUser;
+import trees.park.cal.smoke.models.SpiceManagerSingleton;
+import trees.park.cal.smoke.server.StartSmokingRequest;
 import trees.park.cal.smoke.models.User;
-import trees.park.cal.smoke.models.UserList;
 
 
 public class LoginActivity extends Activity{
 
-    private SpiceManager spiceManager = new SpiceManager(JacksonGoogleHttpClientSpiceService.class);
+    private LoginActivity loginContext;
+    private SpiceManager spiceManager = SpiceManagerSingleton.getSpiceManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        loginContext = this;
 
-        addSignInListener();
+        addStartSmokingListener();
     }
 
     @Override
@@ -49,33 +55,39 @@ public class LoginActivity extends Activity{
         super.onStop();
     }
 
-    private void addSignInListener() {
-        final Button button = (Button) findViewById(R.id.signInButton);
+    private void addStartSmokingListener() {
+        final Button smokingButton = (Button) findViewById(R.id.startSmokingButton);
         final EditText passwordField = (EditText) findViewById(R.id.passwordText);
         final EditText emailText = (EditText) findViewById(R.id.emailText);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        smokingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String password = passwordField.getText().toString();
                 final String email = emailText.getText().toString();
 
-                spiceManager.execute(new SignInRequest(email, password), "json", DurationInMillis.ONE_MINUTE, new SignInRequestListener());
+                StartSmokingRequest request = new StartSmokingRequest(email, password);
+                request.setRetryPolicy(null);
+                spiceManager.execute(request, "json", DurationInMillis.ALWAYS_EXPIRED, new StartSmokingRequestListener());
             }
         });
     }
 
-    public final class SignInRequestListener implements RequestListener<User> {
+    public final class StartSmokingRequestListener implements RequestListener<User> {
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            Toast.makeText(LoginActivity.this, "failure", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "There was an error, please try again.", Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onRequestSuccess(User userList) {
-            System.out.println(ToStringBuilder.reflectionToString(userList));
-            System.out.println("test");
+        public void onRequestSuccess(User user) {
+            SignedInUser.setSignedUser(user);
+            Toast.makeText(LoginActivity.this, "You're in!.", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(loginContext, MainActivity.class);
+            startActivity(intent);
+
         }
     }
 
