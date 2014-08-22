@@ -1,4 +1,4 @@
-package trees.park.cal.smoke.server;
+package trees.park.cal.smoke.server.models;
 
 import org.apache.commons.lang3.Validate;
 

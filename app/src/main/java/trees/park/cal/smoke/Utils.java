@@ -1,11 +1,13 @@
 package trees.park.cal.smoke;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 public class Utils {
 
@@ -26,6 +28,18 @@ public class Utils {
         }
 
         return result;
+    }
+
+    public static String serialize(Object object, String... propertiesToFiler) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        Map props = mapper.convertValue(object, Map.class);
+
+        for (String property : propertiesToFiler) {
+            props.remove(property);
+        }
+
+        return mapper.writeValueAsString(props);
     }
 
 }

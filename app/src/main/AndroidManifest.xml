@@ -27,6 +27,12 @@
         <service
             android:name="com.octo.android.robospice.JacksonGoogleHttpClientSpiceService"
             android:exported="false" />
+
+        <activity
+            android:name=".AddFriendActivity"
+            android:label="@string/title_activity_add_friend"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
     </application>
 
 </manifest>

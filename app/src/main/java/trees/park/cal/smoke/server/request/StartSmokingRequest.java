@@ -1,4 +1,4 @@
-package trees.park.cal.smoke.server;
+package trees.park.cal.smoke.server.request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.http.ByteArrayContent;
@@ -10,6 +10,7 @@ import com.octo.android.robospice.request.googlehttpclient.GoogleHttpClientSpice
 import roboguice.util.temp.Ln;
 import trees.park.cal.smoke.Utils;
 import trees.park.cal.smoke.models.User;
+import trees.park.cal.smoke.server.models.ServerUser;
 
 public class StartSmokingRequest extends GoogleHttpClientSpiceRequest<User> {
     private static final String BASE_URL = "http://192.168.2.66:8181/login/";

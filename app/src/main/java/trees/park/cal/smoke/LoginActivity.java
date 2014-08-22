@@ -1,23 +1,15 @@
 package trees.park.cal.smoke;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Scene;
-import android.transition.Transition;
-import android.transition.TransitionInflater;
-import android.transition.TransitionManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.octo.android.robospice.JacksonGoogleHttpClientSpiceService;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -25,7 +17,7 @@ import com.octo.android.robospice.request.listener.RequestListener;
 
 import trees.park.cal.smoke.models.SignedInUser;
 import trees.park.cal.smoke.models.SpiceManagerSingleton;
-import trees.park.cal.smoke.server.StartSmokingRequest;
+import trees.park.cal.smoke.server.request.StartSmokingRequest;
 import trees.park.cal.smoke.models.User;
 
 
@@ -41,6 +33,10 @@ public class LoginActivity extends Activity{
         loginContext = this;
 
         addStartSmokingListener();
+
+        StartSmokingRequest request = new StartSmokingRequest("michaeldubyu@gmail.com", "password");
+        request.setRetryPolicy(null);
+//        spiceManager.execute(request, "json", DurationInMillis.ALWAYS_EXPIRED, new StartSmokingRequestListener());
     }
 
     @Override
@@ -51,7 +47,6 @@ public class LoginActivity extends Activity{
 
     @Override
     protected void onStop() {
-        spiceManager.shouldStop();
         super.onStop();
     }
 
