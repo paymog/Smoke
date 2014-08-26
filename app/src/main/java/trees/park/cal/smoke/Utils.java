@@ -30,16 +30,8 @@ public class Utils {
         return result;
     }
 
-    public static String serialize(Object object, String... propertiesToFiler) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-
-        Map props = mapper.convertValue(object, Map.class);
-
-        for (String property : propertiesToFiler) {
-            props.remove(property);
-        }
-
-        return mapper.writeValueAsString(props);
+    public static byte[] serialize(Object object) throws JsonProcessingException {
+        return MAPPER.writeValueAsBytes(object);
     }
 
 }

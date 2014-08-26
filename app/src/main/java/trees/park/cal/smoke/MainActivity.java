@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,44 +23,39 @@ import trees.park.cal.smoke.server.request.FriendsRequest;
 
 public class MainActivity extends Activity {
 
-    private SpiceManager spiceManager = SpiceManagerSingleton.getSpiceManager();
-    private List<String> currentUsersFriends;
-    private Context loginContext;
+    private final static SpiceManager SPICE_MANAGER = SpiceManagerSingleton.getSpiceManager();
 
+    private final FriendsRequestListener friendsRequestListener = new FriendsRequestListener();
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loginContext = getApplicationContext();
-        currentUsersFriends = Collections.EMPTY_LIST;
-
-        final ListView listview = (ListView) findViewById(R.id.listview);
-        final StableArrayAdapter adapter = new StableArrayAdapter(loginContext,
-                R.layout.list_view_item, currentUsersFriends);
-        listview.setAdapter(adapter);
+        context = getApplicationContext();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        FriendsRequest request = new FriendsRequest();
-        request.setRetryPolicy(null);
-        spiceManager.execute(request, "json", DurationInMillis.ALWAYS_EXPIRED, new FriendsRequestListener());
+        executeGetFriendsRequest();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == 0) {
-            FriendsRequest request = new FriendsRequest();
-            request.setRetryPolicy(null);
-            spiceManager.execute(request, "json", DurationInMillis.ALWAYS_EXPIRED, new FriendsRequestListener());
+        if (resultCode == AddFriendActivity.SUCCESS_CODE) {
+            executeGetFriendsRequest();
         }
     }
 
+    private void executeGetFriendsRequest() {
+        FriendsRequest request = new FriendsRequest();
+        request.setRetryPolicy(null);
+        SPICE_MANAGER.execute(request, friendsRequestListener);
+    }
+
     public void addFriend(View view) {
-        Toast.makeText(MainActivity.this, "Tried to add friend", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, AddFriendActivity.class);
         startActivityForResult(intent, 0);
     }
@@ -71,8 +64,7 @@ public class MainActivity extends Activity {
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            System.out.println("Failure getting users");
-            Toast.makeText(loginContext, "Could not get users", Toast.LENGTH_SHORT);
+            Toast.makeText(context, "Could not get users", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -81,12 +73,9 @@ public class MainActivity extends Activity {
             System.out.println("Success getting users");
             final ListView listview = (ListView) findViewById(R.id.listview);
 
-//            currentUsersFriends = friendList.getFriends();
-//            ((BaseAdapter)listview.getAdapter()).notifyDataSetChanged();
-            final StableArrayAdapter adapter = new StableArrayAdapter(loginContext,
+            final StableArrayAdapter adapter = new StableArrayAdapter(context,
                     R.layout.list_view_item, friendList.getFriends());
             listview.setAdapter(adapter);
-
 
         }
     }

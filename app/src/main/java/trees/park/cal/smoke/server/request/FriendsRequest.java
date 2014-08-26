@@ -21,7 +21,7 @@ import trees.park.cal.smoke.server.models.ServerFriendRequest;
 
 public class FriendsRequest extends GoogleHttpClientSpiceRequest<FriendList>{
 
-    private static final String BASE_URL = "http://192.168.2.66:8181/get_friends/";
+    private static final String BASE_URL = "http://192.168.100.111:8181/get_friends/";
     private ServerFriendRequest serverFriendRequest;
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -38,7 +38,9 @@ public class FriendsRequest extends GoogleHttpClientSpiceRequest<FriendList>{
         Ln.d("Call web service " + BASE_URL);
         String content = MAPPER.writeValueAsString(serverFriendRequest);
         HttpRequest request = getHttpRequestFactory()
-                .buildPostRequest(new GenericUrl(BASE_URL), new ByteArrayContent("application/json", content.getBytes()));
+                .buildPostRequest(
+                        new GenericUrl(BASE_URL),
+                        new ByteArrayContent("application/json", Utils.serialize(serverFriendRequest)));
         request.setParser( new JacksonFactory().createJsonObjectParser() );
         return Utils.deserialize(request.execute().getContent(), getResultType());
     }

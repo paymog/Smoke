@@ -13,7 +13,7 @@ import trees.park.cal.smoke.models.User;
 import trees.park.cal.smoke.server.models.ServerUser;
 
 public class StartSmokingRequest extends GoogleHttpClientSpiceRequest<User> {
-    private static final String BASE_URL = "http://192.168.2.66:8181/login/";
+    private static final String BASE_URL = "http://192.168.100.111:8181/login/";
     private static final Class<User> RESULT_CLASS = User.class;
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -28,9 +28,10 @@ public class StartSmokingRequest extends GoogleHttpClientSpiceRequest<User> {
     @Override
     public User loadDataFromNetwork() throws Exception {
         Ln.d("Call web service " + BASE_URL);
-        String content = MAPPER.writeValueAsString(user);
         HttpRequest request = getHttpRequestFactory()
-                    .buildPostRequest(new GenericUrl(BASE_URL), new ByteArrayContent("application/json", content.getBytes()));
+                    .buildPostRequest(
+                            new GenericUrl(BASE_URL),
+                            new ByteArrayContent("application/json", Utils.serialize(user)));
         request.setParser( new JacksonFactory().createJsonObjectParser() );
 
         return Utils.deserialize(request.execute().getContent(), getResultType());

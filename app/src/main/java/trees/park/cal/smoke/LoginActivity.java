@@ -1,12 +1,12 @@
 package trees.park.cal.smoke;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,25 +23,26 @@ import trees.park.cal.smoke.models.User;
 
 public class LoginActivity extends Activity{
 
-    private LoginActivity loginContext;
-    private SpiceManager spiceManager = SpiceManagerSingleton.getSpiceManager();
+    private final static SpiceManager SPICE_MANAGER = SpiceManagerSingleton.getSpiceManager();
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginContext = this;
+        context = getApplicationContext();
 
-        addStartSmokingListener();
+        if (!SPICE_MANAGER.isStarted()) {
+            SPICE_MANAGER.start(context);
+        }
 
-        StartSmokingRequest request = new StartSmokingRequest("michaeldubyu@gmail.com", "password");
+        StartSmokingRequest request = new StartSmokingRequest("a@a.a", "a");
         request.setRetryPolicy(null);
-//        spiceManager.execute(request, "json", DurationInMillis.ALWAYS_EXPIRED, new StartSmokingRequestListener());
+        SPICE_MANAGER.execute(request, new StartSmokingRequestListener());
     }
 
     @Override
     protected void onStart() {
-        spiceManager.start(this);
         super.onStart();
     }
 
@@ -50,22 +51,16 @@ public class LoginActivity extends Activity{
         super.onStop();
     }
 
-    private void addStartSmokingListener() {
-        final Button smokingButton = (Button) findViewById(R.id.startSmokingButton);
+    public void signInUser(View view) {
         final EditText passwordField = (EditText) findViewById(R.id.passwordText);
         final EditText emailText = (EditText) findViewById(R.id.emailText);
 
-        smokingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String password = passwordField.getText().toString();
-                final String email = emailText.getText().toString();
+        final String password = passwordField.getText().toString();
+        final String email = emailText.getText().toString();
 
-                StartSmokingRequest request = new StartSmokingRequest(email, password);
-                request.setRetryPolicy(null);
-                spiceManager.execute(request, "json", DurationInMillis.ALWAYS_EXPIRED, new StartSmokingRequestListener());
-            }
-        });
+        StartSmokingRequest request = new StartSmokingRequest(email, password);
+        request.setRetryPolicy(null);
+        SPICE_MANAGER.execute(request, "json", DurationInMillis.ALWAYS_EXPIRED, new StartSmokingRequestListener());
     }
 
     public final class StartSmokingRequestListener implements RequestListener<User> {
@@ -80,9 +75,14 @@ public class LoginActivity extends Activity{
             SignedInUser.setSignedUser(user);
             Toast.makeText(LoginActivity.this, "You're in!.", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(loginContext, MainActivity.class);
-            startActivity(intent);
+            final EditText passwordField = (EditText) findViewById(R.id.passwordText);
+            final EditText emailText = (EditText) findViewById(R.id.emailText);
 
+            passwordField.setText("");
+            emailText.setText("");
+
+            Intent intent = new Intent(context, MainActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -105,7 +105,5 @@ public class LoginActivity extends Activity{
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
 }

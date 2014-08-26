@@ -12,7 +12,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:minWidth="100dp"
-        android:hint="Email Address"/>
+        android:hint="Email Address"
+        android:inputType="textEmailAddress"/>
 
     <LinearLayout
         android:layout_width="fill_parent"

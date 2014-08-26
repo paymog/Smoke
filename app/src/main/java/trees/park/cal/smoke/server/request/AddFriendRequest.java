@@ -13,7 +13,7 @@ import trees.park.cal.smoke.models.User;
 import trees.park.cal.smoke.server.models.ServerRelationship;
 
 public class AddFriendRequest extends GoogleHttpClientSpiceRequest<User>{
-    private static final String BASE_URL = "http://192.168.2.66:8181/add_friend/";
+    private static final String BASE_URL = "http://192.168.100.111:8181/add_friend/";
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private final ServerRelationship relationship;
@@ -27,9 +27,10 @@ public class AddFriendRequest extends GoogleHttpClientSpiceRequest<User>{
     @Override
     public User loadDataFromNetwork() throws Exception {
         Ln.d("Call web service " + BASE_URL);
-        String content = MAPPER.writeValueAsString(relationship);
         HttpRequest request = getHttpRequestFactory()
-                .buildPostRequest(new GenericUrl(BASE_URL), new ByteArrayContent("application/json", content.getBytes()));
+                .buildPostRequest(
+                        new GenericUrl(BASE_URL),
+                        new ByteArrayContent("application/json", Utils.serialize(relationship)));
         request.setParser( new JacksonFactory().createJsonObjectParser() );
 
         return Utils.deserialize(request.execute().getContent(), getResultType());

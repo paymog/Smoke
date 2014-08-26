@@ -19,6 +19,9 @@ import trees.park.cal.smoke.server.request.AddFriendRequest;
 
 
 public class AddFriendActivity extends Activity {
+
+    public static final int SUCCESS_CODE = 0;
+    public static final int CANCEL_CODE = 1;
     private final SpiceManager spiceManager = SpiceManagerSingleton.getSpiceManager();
 
     @Override
@@ -48,7 +51,7 @@ public class AddFriendActivity extends Activity {
     }
 
     public void cancel(View view) {
-        setResult(1);
+        setResult(CANCEL_CODE);
         finish();
     }
 
@@ -70,7 +73,7 @@ public class AddFriendActivity extends Activity {
 
         @Override
         public void onRequestSuccess(User user) {
-            setResult(0);
+            setResult(SUCCESS_CODE);
             finish();
         }
     }
