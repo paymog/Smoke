@@ -10,7 +10,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.octo.android.robospice.SpiceManager;
-import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
 import com.octo.android.robospice.request.listener.RequestListener;
 
@@ -19,7 +18,7 @@ import java.util.List;
 
 import trees.park.cal.smoke.models.FriendList;
 import trees.park.cal.smoke.models.SpiceManagerSingleton;
-import trees.park.cal.smoke.server.request.FriendsRequest;
+import trees.park.cal.smoke.server.request.GetFriendsRequest;
 
 public class MainActivity extends Activity {
 
@@ -50,7 +49,7 @@ public class MainActivity extends Activity {
     }
 
     private void executeGetFriendsRequest() {
-        FriendsRequest request = new FriendsRequest();
+        GetFriendsRequest request = new GetFriendsRequest();
         request.setRetryPolicy(null);
         SPICE_MANAGER.execute(request, friendsRequestListener);
     }

@@ -1,6 +1,6 @@
-package trees.park.cal.smoke.server.models;
+package trees.park.cal.smoke.server.objects;
 
-public class ServerFriendRequest {
+public class FriendRequestObject {
 
     private final String email;
 
@@ -8,7 +8,7 @@ public class ServerFriendRequest {
         return email;
     }
 
-    public ServerFriendRequest(String email) {
+    public FriendRequestObject(String email) {
         this.email = email;
 
     }

@@ -1,9 +1,6 @@
-package trees.park.cal.smoke.server.models;
+package trees.park.cal.smoke.server.objects;
 
-/**
- * Created by paymahn on 2014-08-21.
- */
-public class ServerRelationship {
+public class AddFriendObject {
 
     private final String adder;
     private final String addee;
@@ -16,7 +13,7 @@ public class ServerRelationship {
         return addee;
     }
 
-    public ServerRelationship(String adder, String addee) {
+    public AddFriendObject(String adder, String addee) {
         this.addee = addee;
         this.adder = adder;
     }

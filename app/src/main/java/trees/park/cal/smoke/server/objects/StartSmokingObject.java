@@ -1,11 +1,8 @@
-package trees.park.cal.smoke.server.models;
+package trees.park.cal.smoke.server.objects;
 
 import org.apache.commons.lang3.Validate;
 
-/**
- * Created by paymahn on 2014-08-20.
- */
-public class ServerUser {
+public class StartSmokingObject {
 
     private final String email;
     private final String password;
@@ -18,7 +15,7 @@ public class ServerUser {
         return password;
     }
 
-    public ServerUser(String email, String password) {
+    public StartSmokingObject(String email, String password) {
         this.email = Validate.notBlank(email);
         this.password = Validate.notBlank(password);
     }
