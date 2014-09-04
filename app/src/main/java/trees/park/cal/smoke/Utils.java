@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Utils {
 
-    public static final String SERVER_URL = "http://192.168.100.111:8181";
+    public static final String SERVER_URL = "http://128.189.206.245:8181";
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 

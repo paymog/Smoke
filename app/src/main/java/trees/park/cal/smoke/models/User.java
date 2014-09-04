@@ -10,6 +10,7 @@ public class User {
 
     private long id;
     private String email;
+    private String gcm_id;
 
     public String getEmail() {
         return email;
@@ -18,10 +19,12 @@ public class User {
     private String friends;
 
     @JsonCreator
-    public User(@JsonProperty("id") long id, @JsonProperty("email") String email, @JsonProperty("friends_list")String friends) {
+    public User(@JsonProperty("id") long id, @JsonProperty("email") String email,
+                @JsonProperty("friends_list")String friends, @JsonProperty("gcm_id")String gcm_id) {
         this.id = id;
         this.email = email;
         this.friends = friends;
+        this.gcm_id = gcm_id;
     }
 
     @Override

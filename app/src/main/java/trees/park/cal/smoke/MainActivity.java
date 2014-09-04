@@ -63,13 +63,13 @@ public class MainActivity extends Activity {
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            Toast.makeText(context, "Could not get users", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Could not get users!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onRequestSuccess(final FriendList friendList) {
 
-            System.out.println("Success getting users");
+            System.out.println("Success retrieving users!");
             final ListView listview = (ListView) findViewById(R.id.listview);
 
             final StableArrayAdapter adapter = new StableArrayAdapter(context,

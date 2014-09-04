@@ -36,7 +36,7 @@ public class LoginActivity extends Activity{
             SPICE_MANAGER.start(context);
         }
 
-        StartSmokingRequest request = new StartSmokingRequest("a@a.a", "a");
+        StartSmokingRequest request = new StartSmokingRequest("michaeldubyu@gmail.com", "password");
         request.setRetryPolicy(null);
         SPICE_MANAGER.execute(request, new StartSmokingRequestListener());
     }

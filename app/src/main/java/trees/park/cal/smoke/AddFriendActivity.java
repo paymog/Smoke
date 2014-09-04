@@ -68,7 +68,7 @@ public class AddFriendActivity extends Activity {
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            Toast.makeText(AddFriendActivity.this, "Could not find friend", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddFriendActivity.this, "Invalid friend email!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
