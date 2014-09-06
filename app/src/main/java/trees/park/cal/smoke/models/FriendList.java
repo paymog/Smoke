@@ -15,6 +15,5 @@ public class FriendList {
 
     public FriendList(@JsonProperty("friends_list") List<String> friends) {
         this.friends = friends;
-
     }
 }

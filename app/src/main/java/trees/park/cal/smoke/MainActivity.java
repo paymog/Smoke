@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -16,9 +17,12 @@ import com.octo.android.robospice.request.listener.RequestListener;
 import java.util.HashMap;
 import java.util.List;
 
+import roboguice.util.temp.Ln;
 import trees.park.cal.smoke.models.FriendList;
 import trees.park.cal.smoke.models.SpiceManagerSingleton;
 import trees.park.cal.smoke.server.request.GetFriendsRequest;
+
+import static android.widget.AdapterView.*;
 
 public class MainActivity extends Activity {
 
@@ -69,16 +73,19 @@ public class MainActivity extends Activity {
         @Override
         public void onRequestSuccess(final FriendList friendList) {
 
-            System.out.println("Success retrieving users!");
+            Ln.d("Success retrieving users!");
             final ListView listview = (ListView) findViewById(R.id.listview);
 
             final StableArrayAdapter adapter = new StableArrayAdapter(context,
                     R.layout.list_view_item, friendList.getFriends());
             listview.setAdapter(adapter);
-
+            listview.setOnItemClickListener(new OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+                    Toast.makeText(context, "Pinging " + friendList.getFriends().get(position) + ".", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
-
 
     private class StableArrayAdapter extends ArrayAdapter<String> {
 

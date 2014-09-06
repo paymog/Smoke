@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
@@ -27,9 +29,25 @@ public class User {
         this.gcm_id = gcm_id;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public String getGcm_id() {
+        return gcm_id;
+    }
+
+    public String getFriends() {
+        return friends;
+    }
+
+    public void setGcm_id(String gcm_id) {
+        this.gcm_id = gcm_id;
+    }
+
     @Override
     public String toString() {
-        return this.email;
+        return ReflectionToStringBuilder.toString(this);
     }
 
 }
