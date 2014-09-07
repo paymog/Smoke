@@ -19,11 +19,11 @@
 
 
     <Button
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_weight="1"
-        android:background="#00ff5d"
+        android:background="#ffffff"
         android:text="Add friend"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:onClick="addFriend"/>

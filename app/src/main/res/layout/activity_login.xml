@@ -30,10 +30,10 @@
                 android:id="@+id/emailText"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
-                android:hint="Enter your email address"
+                android:hint="Enter your username"
                 android:inputType="textEmailAddress"
                 android:padding="3dp"
-                android:text="Enter in your username"/>
+                />
 
             <EditText
                 android:id="@+id/passwordText"

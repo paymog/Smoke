@@ -38,7 +38,7 @@ public class LoginActivity extends Activity{
     String regId;
 
     public static final String REG_ID = "regId";
-    private static final String APP_VERSION = "0.1";
+    private static final String APP_VERSION = "0.2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +77,12 @@ public class LoginActivity extends Activity{
 
         @Override
         public void onRequestFailure(SpiceException spiceException) {
-            Toast.makeText(LoginActivity.this, "There was an error updating your gcm, please try again.", Toast.LENGTH_SHORT).show();
+            Ln.d("Error posting GCM for user.");
         }
 
         @Override
         public void onRequestSuccess(User user) {
-            Toast.makeText(LoginActivity.this, "Success updating your gcm!", Toast.LENGTH_SHORT).show();
+            Ln.d("Posted GCM for user " + user.toString());
         }
     }
 
