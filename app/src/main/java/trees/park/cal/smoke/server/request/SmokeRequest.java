@@ -11,13 +11,14 @@ import trees.park.cal.smoke.Utils;
 import trees.park.cal.smoke.models.SignedInUser;
 import trees.park.cal.smoke.models.User;
 import trees.park.cal.smoke.server.objects.SmokeRequestObject;
+import trees.park.cal.smoke.server.objects.SmokeRequestResponseObject;
 
 /**
  * Created by michael on 2014-09-06.
  */
-public class SmokeRequest extends GoogleHttpClientSpiceRequest<Integer>{
+public class SmokeRequest extends GoogleHttpClientSpiceRequest<SmokeRequestResponseObject>{
     private static final String URL = Utils.SERVER_URL + "/smoke_request/";
-    private static final Class<Integer> RESULT_CLASS = Integer.class;
+    private static final Class<SmokeRequestResponseObject> RESULT_CLASS = SmokeRequestResponseObject.class;
 
     private final SmokeRequestObject smokeRequestObject;
 
@@ -27,7 +28,7 @@ public class SmokeRequest extends GoogleHttpClientSpiceRequest<Integer>{
     }
 
     @Override
-    public Integer loadDataFromNetwork() throws Exception {
+    public SmokeRequestResponseObject loadDataFromNetwork() throws Exception {
         Ln.d("Call web service " + URL);
         HttpRequest request = getHttpRequestFactory()
                 .buildPostRequest(

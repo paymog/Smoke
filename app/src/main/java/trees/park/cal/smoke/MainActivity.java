@@ -19,8 +19,11 @@ import java.util.List;
 
 import roboguice.util.temp.Ln;
 import trees.park.cal.smoke.models.FriendList;
+import trees.park.cal.smoke.models.SignedInUser;
 import trees.park.cal.smoke.models.SpiceManagerSingleton;
+import trees.park.cal.smoke.server.objects.SmokeRequestResponseObject;
 import trees.park.cal.smoke.server.request.GetFriendsRequest;
+import trees.park.cal.smoke.server.request.SmokeRequest;
 
 import static android.widget.AdapterView.*;
 
@@ -81,9 +84,31 @@ public class MainActivity extends Activity {
             listview.setAdapter(adapter);
             listview.setOnItemClickListener(new OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                    Toast.makeText(context, "Pinging " + friendList.getFriends().get(position) + ".", Toast.LENGTH_SHORT).show();
+                    String clickedName = friendList.getFriends().get(position);
+                    Toast.makeText(context, "Pinging " + clickedName + ".", Toast.LENGTH_SHORT).show();
+
+                    context.sendBroadcast(new Intent("com.google.android.intent.action.GTALK_HEARTBEAT"));
+                    context.sendBroadcast(new Intent("com.google.android.intent.action.MCS_HEARTBEAT"));
+
+                    SmokeRequest request = new SmokeRequest(clickedName, SignedInUser.getSignedInUser().getEmail());
+                    request.setRetryPolicy(null);
+                    SPICE_MANAGER.execute(request, new SmokeRequestListener());
                 }
             });
+        }
+    }
+
+    public final class SmokeRequestListener implements RequestListener<SmokeRequestResponseObject> {
+
+        @Override
+        public void onRequestFailure(SpiceException spiceException) {
+            Toast.makeText(context, "Could not send a request to specified user!", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onRequestSuccess(SmokeRequestResponseObject smokeRequestResponseObject) {
+            Toast.makeText(context, "Successfully sent request to specified user!", Toast.LENGTH_SHORT).show();
+            Ln.d(smokeRequestResponseObject.toString());
         }
     }
 

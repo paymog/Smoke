@@ -11,11 +11,10 @@ import java.util.Map;
 
 public class Utils {
 
-    public static final String SERVER_URL = "http://192.168.0.33:8181";
+    public static final String SERVER_URL = "http://192.168.0.16:8181";
     public static final String GOOGLE_PROJECT_NUMBER = "728531763053";
     public static final String GOOGLE_PROJECT_ID = "avid-system-679";
     public static final String MESSAGE_KEY = "message";
-
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 

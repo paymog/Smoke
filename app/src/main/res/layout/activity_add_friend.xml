@@ -12,9 +12,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:minWidth="100dp"
-        android:hint="Email Address"
+        android:hint="Friend username"
         android:inputType="textEmailAddress"
-        android:text="Friend username"/>
+        />
 
     <LinearLayout
         android:layout_width="fill_parent"
