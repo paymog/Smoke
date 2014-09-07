@@ -3,9 +3,7 @@ package trees.park.cal.smoke.server.objects;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
 import java.util.List;
 import java.util.Map;
 

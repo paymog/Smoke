@@ -107,7 +107,6 @@ public class MainActivity extends Activity {
 
         @Override
         public void onRequestSuccess(SmokeRequestResponseObject smokeRequestResponseObject) {
-            Toast.makeText(context, "Successfully sent request to specified user!", Toast.LENGTH_SHORT).show();
             Ln.d(smokeRequestResponseObject.toString());
         }
     }
